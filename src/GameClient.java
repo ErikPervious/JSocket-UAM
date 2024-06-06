@@ -5,32 +5,39 @@ public class GameClient {
 
     public static void main(String[] args) {
         try {
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("localhost", 6666);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+            String fromServer;
+            String fromUser;
 
-            // Recebe a mensagem do servidor
-            String serverMessage = in.readLine();
-            System.out.println(serverMessage);
-
-            // Aguarda até que o servidor solicite a jogada
-            if (!serverMessage.equals("Faça sua jogada (0 - Pedra, 1 - Papel, 2 - Tesoura):")) {
-                serverMessage = in.readLine();
-                System.out.println(serverMessage);
+            while ((fromServer = in.readLine()) != null) {
+                System.out.println("Servidor: " + fromServer);
+                if (fromServer.contains("Faça sua jogada")) {
+                    while (true) {
+                        System.out.print("Sua jogada: ");
+                        fromUser = stdIn.readLine();
+                        if (fromUser.equals("0") || fromUser.equals("1") || fromUser.equals("2")) {
+                            out.println(fromUser);
+                            break;
+                        } else {
+                            System.out.println("Entrada inválida. Digite 0, 1 ou 2.");
+                        }
+                    }
+                } else if (fromServer.contains("ganhou") || fromServer.equals("Empate!")) {
+                    System.out.println("Resultado: " + fromServer);
+                    break;
+                }
             }
 
-            // Envia a jogada para o servidor
-            String jogada = userIn.readLine();
-            out.println(jogada);
-
-            // Recebe e exibe o resultado
-            String result = in.readLine();
-            System.out.println("Resultado: " + result);
-
             socket.close();
+        } catch (UnknownHostException e) {
+            System.err.println("Não foi possível conectar ao host.");
+            System.exit(1);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Erro de E/S ao tentar conectar ao servidor.");
+            System.exit(1);
         }
     }
 }

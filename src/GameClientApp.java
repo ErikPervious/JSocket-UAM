@@ -50,7 +50,7 @@ public class GameClientApp {
 
     private void connectToServer() {
         try {
-            socket = new Socket("localhost", 12345);
+            socket = new Socket("localhost", 6666);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 

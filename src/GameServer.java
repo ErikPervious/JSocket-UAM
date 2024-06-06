@@ -29,9 +29,17 @@ public class GameServer {
                     }
                 }
 
-                // Solicita a jogada do cliente
-                out.println("Faça sua jogada (0 - Pedra, 1 - Papel, 2 - Tesoura):");
-                jogada = in.readLine();
+                // Solicita a jogada do cliente até que uma jogada válida seja fornecida
+                while (true) {
+                    out.println("Faça sua jogada (0 - Pedra, 1 - Papel, 2 - Tesoura):");
+                    jogada = in.readLine();
+
+                    if (jogada != null && (jogada.equals("0") || jogada.equals("1") || jogada.equals("2"))) {
+                        break;
+                    } else {
+                        out.println("Jogada inválida. Tente novamente.");
+                    }
+                }
 
                 // Aguardando a jogada do outro cliente
                 synchronized (GameServer.class) {
@@ -52,7 +60,7 @@ public class GameServer {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        ServerSocket serverSocket = new ServerSocket(12345);
+        ServerSocket serverSocket = new ServerSocket(6666);
         System.out.println("Servidor iniciado... Aguardando clientes...");
 
         // Aceita dois clientes
