@@ -10,16 +10,27 @@ public class GameOffline {
         // Opções de jogadas
         String[] opcoes = {"Pedra", "Papel", "Tesoura"};
 
-        // Loop principal do jogo
+        // Loop principal
         while (true) {
-            // Exibe o menu e lê a jogada do usuário
-            System.out.println("Escolha sua jogada:");
-            System.out.println("0 - Pedra");
-            System.out.println("1 - Papel");
-            System.out.println("2 - Tesoura");
-            System.out.println("3 - Sair");
+            // mostra o menu
+            int jogadaUsuario = -1;
+            while (jogadaUsuario < 0 || jogadaUsuario > 3) {
+                System.out.println("Escolha sua jogada:");
+                System.out.println("0 - Pedra");
+                System.out.println("1 - Papel");
+                System.out.println("2 - Tesoura");
+                System.out.println("3 - Sair");
 
-            int jogadaUsuario = scanner.nextInt();
+                if (scanner.hasNextInt()) {
+                    jogadaUsuario = scanner.nextInt();
+                    if (jogadaUsuario < 0 || jogadaUsuario > 3) {
+                        System.out.println("Opção inválida. Tente novamente.");
+                    }
+                } else {
+                    System.out.println("Entrada inválida. Digite um número entre 0 e 3.");
+                    scanner.next(); // Limpa a entrada inválida
+                }
+            }
 
             // Verifica se o usuário quer sair
             if (jogadaUsuario == 3) {
@@ -45,14 +56,14 @@ public class GameOffline {
                 System.out.println("O sistema ganhou!");
             }
 
-            // Aguarda 5 segundos antes de resetar
+            // Aguarda 2 segundos antes de reiniciar
             try {
-                Thread.sleep(5000);  // 5000 milissegundos = 5 segundos
+                Thread.sleep(2000);  // 2000 milissegundos = 2 segundos
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            System.out.println();
+            System.out.println("Reiniciando o jogo...\n");
         }
 
         scanner.close();
